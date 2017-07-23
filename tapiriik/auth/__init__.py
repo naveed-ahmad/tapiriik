@@ -22,7 +22,7 @@ class User:
     def GetByRcToken(token):
        return db.users.find_one({"rc_token": token})
 
-    def CreateWithRcToken(token, creationIP)
+    def CreateWithRcToken(token, creationIP):
        uid = db.users.insert({"Created": datetime.utcnow(), "CreationIP": creationIP, "rc_token": token})
        return db.users.with_options(read_preference=ReadPreference.PRIMARY).find_one({"_id": uid})
 
