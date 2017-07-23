@@ -19,6 +19,21 @@ class User:
     def Get(id):
         return db.users.find_one({"_id": ObjectId(id)})
 
+    def GetByRcToken(token)
+       return db.users.find_one({"rc_token": token})
+
+    def CreateWithRcToken(token, creationIP)
+       uid = db.users.insert({"Created": datetime.utcnow(), "CreationIP": creationIP, "rc_token": token})
+       return db.users.with_options(read_preference=ReadPreference.PRIMARY).find_one({"_id": uid})
+
+    def EnsureWithRcToken(req, token)
+       from ipware.ip import get_real_ip
+       existingUser =  User.GetByRcToken(token)
+       if req.user is None and existingUser is None:
+         req.user = User.CreateWithRcToken(token, get_real_ip(req))
+         User.Login(req.user, req)
+       return req.user
+
     def GetByConnection(svcRec):
         return db.users.find_one({"ConnectedServices.ID": svcRec._id})
 
