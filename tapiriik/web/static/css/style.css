@@ -683,7 +683,7 @@ p.infotip .close:hover {
 	display: inline-block;
 	position:relative;
 	/*border:50px solid #a2b8d0;*/
-  border: 50px solid #26DA7E
+  border: 50px solid #26DA7E;
 	border-radius:50px;
 	height:0;
 	width:0;
