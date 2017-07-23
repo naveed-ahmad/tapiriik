@@ -3,7 +3,6 @@
 body {
 	/*font-family:Arial;
 	background-color:#394863;*/
-  background: rgba(44, 62, 80, 0.4);
 	height:100%;
 	width:100%;
 	margin:0;
@@ -734,14 +733,14 @@ p.infotip .close:hover {
 	display: inline-block;
 	background-color: #29af61; /*#749ac4;*/
 	color:white;
-	padding:15px 15px;
+	padding:10px 15px;
 	border-radius:5px;
 	font-size:120%;
 	white-space: nowrap; /* otherwise the animations break soooo bad */
 }
 
 .syncButtonAttachment.left {
-	padding-right:20px;
+	padding-right:50px;
 	margin-right:-15px;
 }
 
