@@ -130,6 +130,7 @@ body {
 	font-family:Economica;
 	font-weight:bold;
 	margin-top:-150px;
+  display: none !important;
 }
 .logo.inline {
 	position:relative;
@@ -150,9 +151,10 @@ body {
 	display: inline-block;
 }
 .logoPad {
-	margin-top:150px;
+	/*margin-top:150px;*/
 }
 .footers {
+  display: none !important;
 	font-size:130%;
 	font-weight:bold;
 	margin-top:5px;
@@ -164,6 +166,7 @@ body {
 }
 
 .environsWrap {
+  display: none !important;
 	position:fixed;
 	left:0;
 	right:0;
@@ -432,8 +435,9 @@ p.infotip .close:hover {
 
 .service .button {
 	position: relative;
-	background-color:#a2b8d0;
-	text-align: center;
+/*	background-color:#a2b8d0; */
+  background-color:#29af61;
+  text-align: center;
 	border-radius:5px;
 	z-index:3;
 	overflow:hidden;
@@ -446,8 +450,9 @@ p.infotip .close:hover {
 	padding: 3px 5px;
 	padding-top:0;
 	color:white;
-	background-color:#749ac4;
-	border-bottom-left-radius:5px;
+	/*background-color:#749ac4;*/
+  background-color:#26DA7E;
+  border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
 	overflow:hidden;
 	height:25px;
