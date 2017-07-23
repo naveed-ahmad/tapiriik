@@ -26,28 +26,30 @@ body {
 }
 
 .contentOuterBorder, .popoverOuterBorder {
-	border-radius:13px;
+	/*border-radius:13px;
 	padding:1px 0;
 	background-color:rgba(255,255,255,0.35);
-
+*/
 }
 
 .internalPopover .popoverOuterBorder {
-	background-color: #749ac4;
+	/*background-color: #749ac4;*/
 }
 
 .content, .popoverInner {
 	position: relative;
 	margin:14px 15px;
+	/*
 	background-color:white;
 	border-radius: 10px;
 	border:1px solid transparent;
 	padding:15px;
 	font-family:Economica;
+	*/
 }
 
 .internalPopover .popoverInner {
-	background-color:#8ba9cb;
+	/*background-color:#8ba9cb;*/
 	color: white;
 }
 
@@ -1330,12 +1332,14 @@ ul.itemized-clean li {
 }
 
 body.night {
-	background-color: #110F1F;
+/*	background-color: #110F1F; */
+  background: transparent;
 }
 
 body.starfield {
-	background-image:url('../img/starfield.svg');
+	/*background-image:url('../img/starfield.svg');*/
 	background-size: 100% auto;
+  background: transparent;
 }
 
 body.night .mountains #a, body.night .mountains #b, body.night .mountains #c {
