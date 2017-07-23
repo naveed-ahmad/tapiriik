@@ -11,7 +11,6 @@ def authredirect(req, service, level=None):
     svc = Service.FromID(service)
     return redirect(svc.GenerateUserAuthorizationURL(req.session, level))
 
-
 def authreturn(req, service, level=None):
     if ("error" in req.GET or "not_approved" in req.GET):
         success = False
@@ -39,3 +38,11 @@ def authreturn(req, service, level=None):
 
     return render(req, "oauth-return.html", {"success": 1 if success else 0})
 
+def authrc(req):
+    token = req.GET.get['token']
+
+    if token is None:
+        return redirect("app.runnersconnect.net")
+
+    user = User.EnsureWithRcToken(token)
+    return redirect("/")
