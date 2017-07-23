@@ -383,6 +383,8 @@ p.infotip .close:hover {
 
 .dialogWrap img {
 	display:inline-block;
+  background: rgba(41, 175, 97, 0.53);
+  border-radius: 15px;
 }
 
 .splashPreamble {
@@ -1415,9 +1417,4 @@ body.staging .sub::before {
 	background-color:rgba(255,255,255,0.5);
 	color: black;
 	font-size:48px;
-}
-
-.dialogWrap{
-background: rgba(41, 175, 97, 0.53);
-  border-radius: 15px;
 }
