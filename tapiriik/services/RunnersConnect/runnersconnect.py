@@ -183,7 +183,7 @@ class RunnersConnectService(ServiceBase):
             upload_data["points"][0]["inst"] = "start"
             upload_data["points"][-1]["inst"] = "stop"
 
-        response = requests.post(self.UPLOAD_ACTIVITY_URL, data=data=json.dumps(upload_data))
+        response = requests.post(self.UPLOAD_ACTIVITY_URL, data=json.dumps(upload_data))
 
         if upload_resp.status_code != 200:
             raise APIException("Could not upload activity %s %s" % (upload_resp.status_code, upload_resp.text))
