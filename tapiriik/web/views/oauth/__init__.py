@@ -45,4 +45,4 @@ def authrc(req):
         return redirect("https://app.runnersconnect.net")
 
     user = User.EnsureWithRcToken(req, token)
-    return redirect("/")
+    return redirect("http://sync.runnersconnect.net/")

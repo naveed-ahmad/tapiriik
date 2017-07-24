@@ -1001,7 +1001,7 @@ class SynchronizationTask:
                         if activity.Private:
                             override_private = False
                             for conn in actAvailableFromConns:
-                                if conn.GetConfiguration()["sync_private"]:
+                                if True: # RC upload private activities as well conn.GetConfiguration()["sync_private"]:
                                     override_private = True
                                     break
 
