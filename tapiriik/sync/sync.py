@@ -922,29 +922,28 @@ class SynchronizationTask:
                 # Sort services that don't support exhaustive listing last.
                 # That way, we can provide them with the proper bounds for listing based
                 # on activities from other services.
-                # RC disable whole loop
-                #for conn in sorted(self._serviceConnections,
-                #                   key=lambda x: x.Service.SupportsExhaustiveListing,
-                #                   reverse=True):
+                for conn in sorted(self._serviceConnections,
+                                   key=lambda x: x.Service.SupportsExhaustiveListing,
+                                   reverse=True):
                     # If we're not going to be doing anything anyways, stop now
-                #    if len(self._serviceConnections) - len(self._excludedServices) <= 1:
-                #        raise SynchronizationCompleteException()
+                    if len(self._serviceConnections) - len(self._excludedServices) <= 1:
+                        raise SynchronizationCompleteException()
 
-                #    self._primeExtendedAuthDetails(conn)
+                    self._primeExtendedAuthDetails(conn)
 
-                #    logger.info("Ensuring partial sync poll subscription")
-                #    self._ensurePartialSyncPollingSubscription(conn)
+                    logger.info("Ensuring partial sync poll subscription")
+                    self._ensurePartialSyncPollingSubscription(conn)
 
-                #    if not exhaustive and conn.Service.PartialSyncRequiresTrigger and "TriggerPartialSync" not in conn.__dict__ and not conn.Service.ShouldForcePartialSyncTrigger(conn):
-                #        logger.info("Service %s has not been triggered" % conn.Service.ID)
-                #        self._deferredServices.append(conn._id)
-                #        continue
+                    if not exhaustive and conn.Service.PartialSyncRequiresTrigger and "TriggerPartialSync" not in conn.__dict__ and not conn.Service.ShouldForcePartialSyncTrigger(conn):
+                        logger.info("Service %s has not been triggered" % conn.Service.ID)
+                        self._deferredServices.append(conn._id)
+                        continue
 
-                #    if heartbeat_callback:
-                #        heartbeat_callback(SyncStep.List)
+                    if heartbeat_callback:
+                        heartbeat_callback(SyncStep.List)
 
-                #    self._updateSyncProgress(SyncStep.List, conn.Service.ID)
-                #    self._downloadActivityList(conn, exhaustive)
+                    self._updateSyncProgress(SyncStep.List, conn.Service.ID)
+                    self._downloadActivityList(conn, exhaustive)
 
                 self._applyFallbackTZ()
 
