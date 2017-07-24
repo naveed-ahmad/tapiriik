@@ -1,6 +1,7 @@
 from tapiriik.database import db, cachedb, redis
 from tapiriik.messagequeue import mq
 from tapiriik.services import Service, ServiceRecord, APIExcludeActivity, ServiceException, ServiceExceptionScope, ServiceWarning, UserException, UserExceptionType
+from tapiriik.services.RunnersConnect import RunnersConnectService
 from tapiriik.settings import USER_SYNC_LOGS, DISABLED_SERVICES, WITHDRAWN_SERVICES
 from .activity_record import ActivityRecord, ActivityServicePrescence
 from datetime import datetime, timedelta
@@ -847,10 +848,10 @@ class SynchronizationTask:
         return act, dlSvc
 
     def _uploadActivity(self, activity, destinationServiceRec):
-        destSvc = destinationServiceRec.Service
+        #destSvc = destinationServiceRec.Service
 
         try:
-            return destSvc.UploadActivity(destinationServiceRec, activity)
+            return RunnersConnectService.UploadActivity(self.user, activity)
         except (ServiceException, ServiceWarning) as e:
             if not _isWarning(e):
                 activity.Record.IncrementFailureCount(destinationServiceRec)
@@ -921,28 +922,29 @@ class SynchronizationTask:
                 # Sort services that don't support exhaustive listing last.
                 # That way, we can provide them with the proper bounds for listing based
                 # on activities from other services.
-                for conn in sorted(self._serviceConnections,
-                                   key=lambda x: x.Service.SupportsExhaustiveListing,
-                                   reverse=True):
+                # RC disable whole loop
+                #for conn in sorted(self._serviceConnections,
+                #                   key=lambda x: x.Service.SupportsExhaustiveListing,
+                #                   reverse=True):
                     # If we're not going to be doing anything anyways, stop now
-                    if len(self._serviceConnections) - len(self._excludedServices) <= 1:
-                        raise SynchronizationCompleteException()
+                #    if len(self._serviceConnections) - len(self._excludedServices) <= 1:
+                #        raise SynchronizationCompleteException()
 
-                    self._primeExtendedAuthDetails(conn)
+                #    self._primeExtendedAuthDetails(conn)
 
-                    logger.info("Ensuring partial sync poll subscription")
-                    self._ensurePartialSyncPollingSubscription(conn)
+                #    logger.info("Ensuring partial sync poll subscription")
+                #    self._ensurePartialSyncPollingSubscription(conn)
 
-                    if not exhaustive and conn.Service.PartialSyncRequiresTrigger and "TriggerPartialSync" not in conn.__dict__ and not conn.Service.ShouldForcePartialSyncTrigger(conn):
-                        logger.info("Service %s has not been triggered" % conn.Service.ID)
-                        self._deferredServices.append(conn._id)
-                        continue
+                #    if not exhaustive and conn.Service.PartialSyncRequiresTrigger and "TriggerPartialSync" not in conn.__dict__ and not conn.Service.ShouldForcePartialSyncTrigger(conn):
+                #        logger.info("Service %s has not been triggered" % conn.Service.ID)
+                #        self._deferredServices.append(conn._id)
+                #        continue
 
-                    if heartbeat_callback:
-                        heartbeat_callback(SyncStep.List)
+                #    if heartbeat_callback:
+                #        heartbeat_callback(SyncStep.List)
 
-                    self._updateSyncProgress(SyncStep.List, conn.Service.ID)
-                    self._downloadActivityList(conn, exhaustive)
+                #    self._updateSyncProgress(SyncStep.List, conn.Service.ID)
+                #    self._downloadActivityList(conn, exhaustive)
 
                 self._applyFallbackTZ()
 
@@ -998,10 +1000,11 @@ class SynchronizationTask:
                                 raise ActivityShouldNotSynchronizeException()
 
                         # We don't always know if the activity is private before it's downloaded, but we can check anyways since it saves a lot of time.
-                        if activity.Private:
+                        # RC disabled private check
+                        if False: #activity.Private:
                             override_private = False
                             for conn in actAvailableFromConns:
-                                if True: # RC upload private activities as well conn.GetConfiguration()["sync_private"]:
+                                if conn.GetConfiguration()["sync_private"]:
                                     override_private = True
                                     break
 
@@ -1014,21 +1017,24 @@ class SynchronizationTask:
                         eligibleServices = None
                         while True:
                             # recipientServices are services that don't already have this activity
-                            recipientServices = self._determineRecipientServices(activity)
-                            if len(recipientServices) == 0:
-                                totalActivities -= 1  # doesn't count
-                                raise ActivityShouldNotSynchronizeException()
+                            # RC disable
+                            #recipientServices = self._determineRecipientServices(activity)
+                            #if len(recipientServices) == 0:
+                            #    totalActivities -= 1  # doesn't count
+                            #    raise ActivityShouldNotSynchronizeException()
 
                             # eligibleServices are services that are permitted to receive this activity - taking into account flow exceptions, excluded services, unfufilled configuration requirements, etc.
-                            eligibleServices = self._determineEligibleRecipientServices(activity=activity, recipientServices=recipientServices)
+                            #eligibleServices = self._determineEligibleRecipientServices(activity=activity, recipientServices=recipientServices)
 
-                            if not len(eligibleServices):
-                                logger.info("\t\t...has no eligible destinations")
-                                totalActivities -= 1  # Again, doesn't really count.
-                                raise ActivityShouldNotSynchronizeException()
+                            #if not len(eligibleServices):
+                            #    logger.info("\t\t...has no eligible destinations")
+                            #    totalActivities -= 1  # Again, doesn't really count.
+                            #    raise ActivityShouldNotSynchronizeException()
 
                             has_deferred = False
-                            for conn in eligibleServices:
+                            #RC disable
+                            #for conn in eligibleServices:
+                            for conn in []:
                                 if conn._id in self._deferredServices:
                                     logger.info("Doing deferred list from %s" % conn.Service.ID)
                                     # no_add since...
@@ -1040,8 +1046,8 @@ class SynchronizationTask:
 
                             # If we had deferred listing activities from a service, we have to repeat this loop to consider the new info
                             # Otherwise, once was enough
-                            if not has_deferred:
-                                break
+                            #if not has_deferred:
+                            #    break
 
 
                         # This is after the above exit points since they're the most frequent (& cheapest) cases - want to avoid DB churn
@@ -1057,7 +1063,7 @@ class SynchronizationTask:
                         self._updateSyncProgress(SyncStep.Download, syncProgress)
 
                         # The second most important line of logging in the application...
-                        logger.info("\t\t...to " + str([x.Service.ID for x in recipientServices]))
+                        #logger.info("\t\t...to " + str([x.Service.ID for x in recipientServices]))
 
                         # Download the full activity record
                         full_activity, activitySource = self._downloadActivity(activity)
@@ -1094,22 +1100,25 @@ class SynchronizationTask:
 
                         successful_destination_service_ids = []
 
-                        for destinationSvcRecord in eligibleServices:
+                        #for destinationSvcRecord in eligibleServices: RC hack
+                        for destinationSvcRecord in ['runnersconnect']:
                             if heartbeat_callback:
                                 heartbeat_callback(SyncStep.Upload)
-                            destSvc = destinationSvcRecord.Service
-                            if not destSvc.ReceivesStationaryActivities and full_activity.Stationary:
-                                logger.info("\t\t...marked as stationary during download")
-                                activity.Record.MarkAsNotPresentOn(destinationSvcRecord, UserException(UserExceptionType.StationaryUnsupported))
-                                continue
-                            if not full_activity.Stationary:
-                                if not (destSvc.ReceivesNonGPSActivitiesWithOtherSensorData or full_activity.GPS):
-                                    logger.info("\t\t...marked as non-GPS during download")
-                                    activity.Record.MarkAsNotPresentOn(destinationSvcRecord, UserException(UserExceptionType.NonGPSUnsupported))
-                                    continue
+                            # RC disabled these two checks (Stationary, no gps ) we're handling these in rails app
+                            #destSvc = destinationSvcRecord.Service
+                            #if not destSvc.ReceivesStationaryActivities and full_activity.Stationary:
+                            #    logger.info("\t\t...marked as stationary during download")
+                            #    activity.Record.MarkAsNotPresentOn(destinationSvcRecord, UserException(UserExceptionType.StationaryUnsupported))
+                            #    continue
+                            #if not full_activity.Stationary:
+                            #    if not (destSvc.ReceivesNonGPSActivitiesWithOtherSensorData or full_activity.GPS):
+                            #        logger.info("\t\t...marked as non-GPS during download")
+                            #        activity.Record.MarkAsNotPresentOn(destinationSvcRecord, UserException(UserExceptionType.NonGPSUnsupported))
+                            #        continue
 
                             uploaded_external_id = None
-                            logger.info("\t  Uploading to " + destSvc.ID)
+                            #logger.info("\t  Uploading to " + destSvc.ID)
+                            logger.info("\t  Uploading to Runnersconnect")
                             try:
                                 uploaded_external_id = self._uploadActivity(full_activity, destinationSvcRecord)
                             except UploadException:
@@ -1117,16 +1126,25 @@ class SynchronizationTask:
                             logger.info("\t  Uploaded")
 
                             activity.Record.MarkAsSynchronizedTo(destinationSvcRecord)
-                            successful_destination_service_ids.append(destSvc.ID)
+                            #RC
+                            #successful_destination_service_ids.append(destSvc.ID)
+                            successful_destination_service_ids.append('rc')
 
                             if uploaded_external_id:
                                 # record external ID, for posterity (and later debugging)
-                                db.uploaded_activities.insert({"ExternalID": uploaded_external_id, "Service": destSvc.ID, "UserExternalID": destinationSvcRecord.ExternalID, "Timestamp": datetime.utcnow()})
+                                #RC
+                                #db.uploaded_activities.insert({"ExternalID": uploaded_external_id, "Service": destSvc.ID, "UserExternalID": destinationSvcRecord.ExternalID, "Timestamp": datetime.utcnow()})
+                                db.uploaded_activities.insert({"ExternalID": uploaded_external_id, "Service": "runnersconnect", "UserExternalID": "RC_USER", "Timestamp": datetime.utcnow()})
                             # flag as successful
-                            db.connections.update({"_id": destinationSvcRecord._id},
+                            #RC
+                            #db.connections.update({"_id": destinationSvcRecord._id},
+                            #                      {"$addToSet": {"SynchronizedActivities": {"$each": list(activity.UIDs)}}})
+                            db.connections.update({"_id": "runnersconnect"},
                                                   {"$addToSet": {"SynchronizedActivities": {"$each": list(activity.UIDs)}}})
 
-                            db.sync_stats.update({"ActivityID": activity.UID}, {"$addToSet": {"DestinationServices": destSvc.ID, "SourceServices": activitySource.ID}, "$set": {"Distance": activity.Stats.Distance.asUnits(ActivityStatisticUnit.Meters).Value, "Timestamp": datetime.utcnow()}}, upsert=True)
+                            # RC
+                            #db.sync_stats.update({"ActivityID": activity.UID}, {"$addToSet": {"DestinationServices": destSvc.ID, "SourceServices": activitySource.ID}, "$set": {"Distance": activity.Stats.Distance.asUnits(ActivityStatisticUnit.Meters).Value, "Timestamp": datetime.utcnow()}}, upsert=True)
+                            db.sync_stats.update({"ActivityID": activity.UID}, {"$addToSet": {"DestinationServices": "runnersconnect", "SourceServices": activitySource.ID}, "$set": {"Distance": activity.Stats.Distance.asUnits(ActivityStatisticUnit.Meters).Value, "Timestamp": datetime.utcnow()}}, upsert=True)
 
                         if len(successful_destination_service_ids):
                             self._pushRecentSyncActivity(full_activity, successful_destination_service_ids)
