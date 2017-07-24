@@ -39,7 +39,7 @@ def authreturn(req, service, level=None):
     return render(req, "oauth-return.html", {"success": 1 if success else 0})
 
 def authrc(req):
-    token = req.GET.get['token']
+    token = req.GET.get('token')
 
     if token is None:
         return redirect("app.runnersconnect.net")
