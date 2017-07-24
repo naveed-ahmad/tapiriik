@@ -42,7 +42,7 @@ def authrc(req):
     token = req.GET.get('token')
 
     if token is None:
-        return redirect("app.runnersconnect.net")
+        return redirect("https://app.runnersconnect.net")
 
     user = User.EnsureWithRcToken(token)
     return redirect("/")
