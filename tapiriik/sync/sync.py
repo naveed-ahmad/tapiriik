@@ -733,6 +733,7 @@ class SynchronizationTask:
                     db.connections.update({"_id": {"$in": list(activity.ServiceDataCollection.keys())}}, {"$unset": {"SynchronizedActivities": ""}})
                     self._sync_result.ForceExhaustive = True
                 else:
+                    logger.debug("\t\tUpdating SynchronizedActivities break!!")
                     raise
 
     def _updateActivityRecordInitialPrescence(self, activity):
