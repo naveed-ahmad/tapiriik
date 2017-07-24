@@ -713,6 +713,7 @@ class SynchronizationTask:
         # Locally mark this activity as present on the appropriate services.
         # These needs to happen regardless of whether the activity is going to be synchronized.
         #   Before, I had moved this under all the eligibility/recipient checks, but that could cause persistent duplicate self._activities when the user had already manually uploaded the same activity to multiple sites.
+        logger.debug(" dd ")
         updateServicesWithExistingActivity = False
         for serviceWithExistingActivityId in activity.ServiceDataCollection.keys():
             serviceWithExistingActivity = [x for x in self._serviceConnections if x._id == serviceWithExistingActivityId][0]
@@ -1034,15 +1035,15 @@ class SynchronizationTask:
                             has_deferred = False
                             #RC disable
                             #for conn in eligibleServices:
-                            for conn in []:
-                                if conn._id in self._deferredServices:
-                                    logger.info("Doing deferred list from %s" % conn.Service.ID)
+                            #for conn in []:
+                            #    if conn._id in self._deferredServices:
+                            #        logger.info("Doing deferred list from %s" % conn.Service.ID)
                                     # no_add since...
                                     #  a) we're iterating over the list it'd be adding to, and who knows what will happen then
                                     #  b) for the current use of deferred services, we don't care about new activities
-                                    self._downloadActivityList(conn, exhaustive, no_add=True)
-                                    self._deferredServices.remove(conn._id)
-                                    has_deferred = True
+                            #        self._downloadActivityList(conn, exhaustive, no_add=True)
+                            #        self._deferredServices.remove(conn._id)
+                            #        has_deferred = True
 
                             # If we had deferred listing activities from a service, we have to repeat this loop to consider the new info
                             # Otherwise, once was enough
@@ -1064,6 +1065,7 @@ class SynchronizationTask:
 
                         # The second most important line of logging in the application...
                         #logger.info("\t\t...to " + str([x.Service.ID for x in recipientServices]))
+                        logger.debug(" \t\t uploading to RC"")
 
                         # Download the full activity record
                         full_activity, activitySource = self._downloadActivity(activity)
