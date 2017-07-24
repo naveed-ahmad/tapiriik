@@ -23,7 +23,7 @@ class User:
        return db.users.find_one({"rc_token": token})
 
     def CreateWithRcToken(token, creationIP):
-       uid = db.users.insert({"Created": datetime.utcnow(), "CreationIP": creationIP, "rc_token": token})
+       uid = db.users.insert({"Created": datetime.utcnow(), "CreationIP": creationIP, "rc_token": token, "ConnectedServices": []})
        return db.users.with_options(read_preference=ReadPreference.PRIMARY).find_one({"_id": uid})
 
     def EnsureWithRcToken(req, token):
