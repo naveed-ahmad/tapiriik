@@ -264,7 +264,7 @@ form input[type=checkbox] {
 	vertical-align:text-top;
 }
 
-button {
+button, a.button {
 	/*font-family: Economica;
 	font-weight:bold;
 	*/
@@ -364,26 +364,39 @@ p.infotip {
 	color: #333;
 	margin-top: 10px;
 	margin-bottom: 10px;
+  background-image: -webkit-linear-gradient(top, #dff0d8 0%, #c8e5bc 100%);
+  background-image: -o-linear-gradient(top, #dff0d8 0%, #c8e5bc 100%);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#dff0d8), to(#c8e5bc));
+  background-image: linear-gradient(to bottom, #dff0d8 0%, #c8e5bc 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdff0d8', endColorstr='#ffc8e5bc', GradientType=0);
+  border-color: #b2dba1;
+  padding: 10px;
 }
 
 p.infotip .close {
 	font-size: 80%;
 	font-style: normal;
 	font-family: sans-serif;
-	color: #ddd;
 	margin-left:7px;
 	cursor: pointer;
 	vertical-align: 2px;
+  float: right;
+  color: #000000;
+  text-shadow: 0 1px 0 #ffffff;
+  opacity: 0.2;
+  filter: alpha(opacity=20);
 }
 
 p.infotip .close:hover {
-	color:#ccc;
+  opacity: 0.8;
 }
 
 .dialogWrap img {
 	display:inline-block;
   background: rgba(41, 175, 97, 0.53);
   border-radius: 15px;
+  padding: 15px;
 }
 
 .splashPreamble {
