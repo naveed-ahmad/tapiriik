@@ -31,7 +31,7 @@
 							{% if user.ConnectedServices|length > 1 %}
 								{% if extauth and not hasextauth %}
 									<div class="row">
-										<a href="{{ provider.UserAuthorizationURL }}" class="authDialog" service="{{ provider.ID }}"><span class="control" id="reauth">Reauthorize<span class="sr"> {{ provider.DisplayName }}</span></span></a>
+										<a href="{{ provider.UserAuthorizationURL }}" target="_blank" class="authDialog" service="{{ provider.ID }}"><span class="control" id="reauth">Reauthorize<span class="sr"> {{ provider.DisplayName }}</span></span></a>
 									</div>
 								{% endif %}
 								<div class="row">
