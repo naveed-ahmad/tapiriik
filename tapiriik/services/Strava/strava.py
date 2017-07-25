@@ -298,7 +298,7 @@ class StravaService(ServiceBase):
 
         return activity
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         logger.info("Activity tz " + str(activity.TZ) + " dt tz " + str(activity.StartTime.tzinfo) + " starttime " + str(activity.StartTime))
 
         if self.LastUpload is not None:

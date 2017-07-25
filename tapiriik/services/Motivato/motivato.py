@@ -88,7 +88,7 @@ class MotivatoService(ServiceBase):
             raise APIException("Unable to retrieve username", block=True, user_exception=UserException(UserExceptionType.Authorization, intervention_required=True))
         return (id, {}, {"Email": CredentialStore.Encrypt(email), "Password": CredentialStore.Encrypt(password)})
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         logger.debug("Motivato UploadActivity")
         session = self._get_session(record=serviceRecord)
 

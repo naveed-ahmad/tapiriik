@@ -576,10 +576,11 @@ class SynchronizationTask:
                 continue
 
             destSvc = destinationSvcRecord.Service
-            if destSvc.RequiresConfiguration(destinationSvcRecord):
-                logger.info("\t\t" + destSvc.ID + " not configured")
-                activity.Record.MarkAsNotPresentOn(destinationSvcRecord, UserException(UserExceptionType.NotConfigured))
-                continue  # not configured, so we won't even try
+            #RC
+            #if destSvc.RequiresConfiguration(destinationSvcRecord):
+            #    logger.info("\t\t" + destSvc.ID + " not configured")
+            #    activity.Record.MarkAsNotPresentOn(destinationSvcRecord, UserException(UserExceptionType.NotConfigured))
+            #    continue  # not configured, so we won't even try
             if not destSvc.ReceivesStationaryActivities and activity.Stationary:
                 logger.info("\t\t" + destSvc.ID + " doesn't receive stationary activities")
                 activity.Record.MarkAsNotPresentOn(destinationSvcRecord, UserException(UserExceptionType.StationaryUnsupported))
@@ -846,11 +847,11 @@ class SynchronizationTask:
         # If nothing was downloaded at this point, the activity record will show the most recent error - which is fine enough, since only one service is needed to get the activity.
         return act, dlSvc
 
-    def _uploadActivity(self, activity, destinationServiceRec):
+    def _uploadActivity(self, activity, destinationServiceRec, activitySource):
         destSvc = destinationServiceRec.Service
 
         try:
-            return destSvc.UploadActivity(destinationServiceRec, activity)
+            return destSvc.UploadActivity(destinationServiceRec, activity, activitySource)
         except (ServiceException, ServiceWarning) as e:
             if not _isWarning(e):
                 activity.Record.IncrementFailureCount(destinationServiceRec)
@@ -1110,8 +1111,9 @@ class SynchronizationTask:
 
                             uploaded_external_id = None
                             logger.info("\t  Uploading to " + destSvc.ID)
+                            logger.info(type(destinationSvcRecord))
                             try:
-                                uploaded_external_id = self._uploadActivity(full_activity, destinationSvcRecord)
+                                uploaded_external_id = self._uploadActivity(full_activity, destinationSvcRecord, activitySource)
                             except UploadException:
                                 continue # At this point it's already been added to the error collection, so we can just bail.
                             logger.info("\t  Uploaded")

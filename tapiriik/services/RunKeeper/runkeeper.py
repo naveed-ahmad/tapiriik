@@ -220,7 +220,7 @@ class RunKeeperService(ServiceBase):
             lap.Waypoints[0].Type = WaypointType.Start
             lap.Waypoints[-1].Type = WaypointType.End
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         #  assembly dict to post to RK
         uploadData = self._createUploadData(activity, serviceRecord.GetConfiguration()["auto_pause"])
         uris = self._getAPIUris(serviceRecord)

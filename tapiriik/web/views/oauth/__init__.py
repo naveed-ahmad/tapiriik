@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from tapiriik.services import Service
 from tapiriik.auth import User
 import json
+from tapiriik.services.RunnersConnect import RunnersConnectService
 
 
 def authredirect(req, service, level=None):
@@ -45,4 +46,8 @@ def authrc(req):
         return redirect("https://app.runnersconnect.net")
 
     user = User.EnsureWithRcToken(req, token)
+    uid, authData, extendedAuthData = (token, {}, {"token": token})
+    serviceRecord = Service.EnsureServiceRecordWithAuth(RunnersConnectService, uid, authData, extendedAuthData, True)
+    User.ConnectService(user, serviceRecord)
+
     return redirect("http://sync.runnersconnect.net/")

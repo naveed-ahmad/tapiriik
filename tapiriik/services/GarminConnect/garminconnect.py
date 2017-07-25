@@ -536,7 +536,7 @@ class GarminConnectService(ServiceBase):
 
         return activity
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         #/proxy/upload-service-1.1/json/upload/.fit
         fit_file = FITIO.Dump(activity)
         files = {"data": ("tap-sync-" + str(os.getpid()) + "-" + activity.UID + ".fit", fit_file)}

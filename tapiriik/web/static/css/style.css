@@ -1417,3 +1417,7 @@ body.staging .sub::before {
 	color: black;
 	font-size:48px;
 }
+
+#runnersconnect{
+  display: none;
+}

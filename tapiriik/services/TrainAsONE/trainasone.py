@@ -127,7 +127,7 @@ class TrainAsONEService(ServiceBase):
 
         return activity
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         # Upload the workout as a .FIT file
         uploaddata = FITIO.Dump(activity)
 

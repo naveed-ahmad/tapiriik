@@ -22,10 +22,11 @@ class Service:
     def FromID(id):
         if id in Service._serviceMappings:
             return Service._serviceMappings[id]
-        raise ValueError
+        raise ValueError(id)
 
     def List():
         return [
+            RunnersConnect,
             RunKeeper,
             Strava,
             GarminConnect,

@@ -310,7 +310,7 @@ class EndomondoService(ServiceBase):
         else:
             return [k for k,v in self._reverseActivityMappings.items() if v == activity.Type][0]
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         session = self._oauthSession(serviceRecord)
         device_id = self._deviceId(serviceRecord)
         if not serviceRecord.GetConfiguration()["DeviceRegistered"]:

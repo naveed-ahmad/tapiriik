@@ -314,7 +314,7 @@ class BeginnerTriathleteService(ServiceBase):
 
         return activity
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         # Upload the workout as a .FIT file
         session = self._prepare_request(self._getUserToken(serviceRecord))
         uploaddata = FITIO.Dump(activity)

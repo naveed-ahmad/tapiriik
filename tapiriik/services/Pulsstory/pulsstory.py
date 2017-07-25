@@ -260,7 +260,7 @@ class PulsstoryService(ServiceBase):
             lap.Waypoints[0].Type = WaypointType.Start
             lap.Waypoints[-1].Type = WaypointType.End
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         #  assembly dict to post to pulsstory
         uploadData = self._createUploadData(activity, False)
         uris = self._getAPIUris(serviceRecord)

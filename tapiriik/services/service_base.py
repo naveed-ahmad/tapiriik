@@ -106,7 +106,7 @@ class ServiceBase:
         raise NotImplementedError
 
     # Should return an uploadId for storage and potential use in DeleteActivity
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         raise NotImplementedError
 
     def DeleteActivity(self, serviceRecord, uploadId):
