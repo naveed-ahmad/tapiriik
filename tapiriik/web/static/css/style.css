@@ -156,7 +156,6 @@ body {
 	/*margin-top:150px;*/
 }
 .footers {
-  display: none !important;
 	font-size:130%;
 	font-weight:bold;
 	margin-top:5px;
@@ -283,6 +282,7 @@ button, a.button {
   color: #ffffff;
   background-color: #29af61;
   border-color: #249a56;
+  text-decoration: none;
 }
 
 button:focus {

@@ -214,7 +214,7 @@ tapiriik.OpenRememberDetailsDialog = function(svcId){
 	var mode = tapiriik.ServiceInfo[svcId].AuthenticationType;
 	var contents;
 
-	contents = $("<form><center><p>If you don't let tapiriik <b>remember your <span class=\"service-name\"></span> credentials</b>,<br/> you'll need to come back and re-enter them every hour.</p><button id=\"remember-nack\" class=\"cancel\">No thanks</button><button id=\"remember-ack\">Remember my login</button><br/><p>(either way, your other accounts will not be affected)</p></center></form>");
+	contents = $("<form><center><p>If you don't let us to <b>remember your <span class=\"service-name\"></span> credentials</b>,<br/> you'll need to come back and re-enter them every hour.</p><button id=\"remember-nack\" class=\"cancel\">No thanks</button><button id=\"remember-ack\">Remember my login</button><br/><p>(either way, your other accounts will not be affected)</p></center></form>");
 	$(".service-name", contents).text(tapiriik.ServiceInfo[svcId].DisplayName);
 
 	$("#remember-ack", contents).click(function(){
@@ -266,7 +266,7 @@ tapiriik.OpenDeauthDialog = function(svcId){
 };
 
 tapiriik.CreateDirectLoginForm = function(svcId){
-	var form = $("<form novalidate><div class=\"error\" id=\"login-fail\">There was a problem logging you in</div><div class=\"error\" id=\"login-error\">There was a system error :(</div><label for=\"email\">Email/Username</label><input autofocus type=\"email\" id=\"email\"/><label for=\"password\">Password</label><input type=\"password\" id=\"password\"><br/><span class=\"persist-controls\"><input type=\"checkbox\" id=\"persist\"/><label for=\"persist\">Save these details</label><br/></span><center><a href=\"/\">Back</a> <button type=\"submit\" >Log in</button></center></form>");
+	var form = $("<form novalidate><div class=\"error\" id=\"login-fail\">There was a problem logging you in</div><div class=\"error\" id=\"login-error\">There was a system error :(</div><label for=\"email\">Email/Username</label><input autofocus type=\"email\" id=\"email\"/><label for=\"password\">Password</label><input type=\"password\" id=\"password\"><br/><span class=\"persist-controls\"><input type=\"checkbox\" id=\"persist\"/><label for=\"persist\">Save these details</label><br/></span><center><a href='/'>Back</a> <button type=\"submit\" >Log in</button></center></form>");
 	if (!tapiriik.ServiceInfo[svcId].UsesExtendedAuth){
 		$(".persist-controls",form).hide();
 	}
