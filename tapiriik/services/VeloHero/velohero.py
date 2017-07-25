@@ -245,7 +245,7 @@ class VeloHeroService(ServiceBase):
         return activity
 
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         """
         POST a Multipart-Encoded File
         

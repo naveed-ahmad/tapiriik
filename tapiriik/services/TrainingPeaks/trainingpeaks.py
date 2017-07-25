@@ -189,7 +189,7 @@ class TrainingPeaksService(ServiceBase):
 
         return activities, exclusions
 
-    def UploadActivity(self, svcRecord, activity):
+    def UploadActivity(self, svcRecord, activity, activitySource):
         pwxdata_gz = BytesIO()
         with gzip.GzipFile(fileobj=pwxdata_gz, mode="w") as gzf:
           gzf.write(PWXIO.Dump(activity).encode("utf-8"))

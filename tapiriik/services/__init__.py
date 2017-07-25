@@ -6,8 +6,8 @@ from tapiriik.services.Strava import StravaService
 Strava = StravaService()
 from tapiriik.services.Endomondo import EndomondoService
 Endomondo = EndomondoService()
-from tapiriik.services.Dropbox import DropboxService
-Dropbox = DropboxService()
+#from tapiriik.services.Dropbox import DropboxService
+#Dropbox = DropboxService()
 from tapiriik.services.GarminConnect import GarminConnectService
 GarminConnect = GarminConnectService()
 from tapiriik.services.SportTracks import SportTracksService
@@ -32,6 +32,8 @@ from tapiriik.services.BeginnerTriathlete import BeginnerTriathleteService
 BeginnerTriathlete = BeginnerTriathleteService()
 from tapiriik.services.Pulsstory import PulsstoryService
 Pulsstory = PulsstoryService()
+from tapiriik.services.RunnersConnect import RunnersConnectService
+RunnersConnect = RunnersConnectService()
 
 PRIVATE_SERVICES = []
 try:

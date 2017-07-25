@@ -22,16 +22,17 @@ class Service:
     def FromID(id):
         if id in Service._serviceMappings:
             return Service._serviceMappings[id]
-        raise ValueError
+        raise ValueError(id)
 
     def List():
         return [
+            RunnersConnect,
             RunKeeper,
             Strava,
             GarminConnect,
             Endomondo,
             SportTracks,
-            Dropbox,
+            # Dropbox,
             TrainingPeaks,
             RideWithGPS,
             TrainAsONE,
@@ -49,21 +50,21 @@ class Service:
         # ...but that would require either a) downloading it from evry service or b) storing a lot more activity metadata
         # So, I think this will do for now
         return [
+            GarminConnect, # The reference, RC: yeah same for RC
+            RunKeeper, # No laps, no cadence, no power. RC: No problem, lot of rc users are using RK
+            Strava, # No laps RC: strava is 3rd option for our users
+            NikePlus, #RC nike is 4th. Remaining services don't matter to us for now
             TrainerRoad, # Special case, since TR has a lot more data in some very specific areas
-            GarminConnect, # The reference
             Smashrun,  # TODO: not sure if this is the right place, but it seems to have a lot of data
             SportTracks, # Pretty much equivalent to GC, no temperature (not that GC temperature works all thar well now, but I digress)
             TrainingPeaks, # No seperate run cadence, but has temperature
-            Dropbox, # Equivalent to any of the above
+            # Dropbox, # Equivalent to any of the above. RC: don't need dropbox
             RideWithGPS, # Uses TCX for everything, so same as Dropbox
             TrainAsONE,
             VeloHero, # PWX export, no temperature
-            Strava, # No laps
             Endomondo, # No laps, no cadence
-            RunKeeper, # No laps, no cadence, no power
             BeginnerTriathlete, # No temperature
             Motivato,
-            NikePlus,
             Pulsstory
         ] + PRIVATE_SERVICES
 

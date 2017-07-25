@@ -19,6 +19,23 @@ class User:
     def Get(id):
         return db.users.find_one({"_id": ObjectId(id)})
 
+    def GetByRcToken(token):
+       return db.users.find_one({"rc_token": token})
+
+    def CreateWithRcToken(token, creationIP):
+       uid = db.users.insert({"Created": datetime.utcnow(), "CreationIP": creationIP, "rc_token": token})
+       return db.users.with_options(read_preference=ReadPreference.PRIMARY).find_one({"_id": uid})
+
+    def EnsureWithRcToken(req, token):
+       from ipware.ip import get_real_ip
+       existingUser =  User.GetByRcToken(token)
+       if existingUser is None:
+         User.CreateWithRcToken(token, get_real_ip(req))
+       existingUser = User.GetByRcToken(token)
+       req.user = existingUser
+       User.Login(req.user, req)
+       return existingUser
+
     def GetByConnection(svcRec):
         return db.users.find_one({"ConnectedServices.ID": svcRec._id})
 
@@ -77,15 +94,17 @@ class User:
         # Payments and Promos share the essential data field - Expiry
         # We don't really care if the payment has yet to take place yet - why would it be in the system then?
         # (Timestamp too, but the fact we rely on it here is only for backwards compatability with some old payment records)
-        payment_like_objects = (user["Payments"] if "Payments" in user else []) + (user["Promos"] if "Promos" in user else []) + (user["ExternalPayments"] if "ExternalPayments" in user else [])
-        for payment in payment_like_objects:
-            if "Expiry" in payment:
-                if payment["Expiry"] == None or payment["Expiry"] > datetime.utcnow():
-                    return True
-            else:
-                if payment["Timestamp"] > (datetime.utcnow() - timedelta(days=365.25)):
-                    return True
-        return False
+        return True
+
+        #payment_like_objects = (user["Payments"] if "Payments" in user else []) + (user["Promos"] if "Promos" in user else []) + (user["ExternalPayments"] if "ExternalPayments" in user else [])
+        #for payment in payment_like_objects:
+        #   if "Expiry" in payment:
+        #       if payment["Expiry"] == None or payment["Expiry"] > datetime.utcnow():
+        #           return True
+        #   else:
+        #       if payment["Timestamp"] > (datetime.utcnow() - timedelta(days=365.25)):
+        #           return True
+        #return False
 
     def PaidUserMongoQuery():
         # Don't need the no-expiry case here, those payments have all expired by now

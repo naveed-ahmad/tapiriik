@@ -16,7 +16,6 @@ def auth_login_ajax(req, service):
     res = auth_do(req, service)
     return HttpResponse(json.dumps({"success": res == True, "result": res}), content_type='application/json')
 
-
 def auth_do(req, service):
     svc = Service.FromID(service)
     from tapiriik.services.api import APIException

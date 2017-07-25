@@ -290,7 +290,7 @@ class DropboxService(ServiceBase):
         name = re.sub(r"^([\W_])|([\W_])$", "", name) # To deal with trailing-seperator weirdness (repeated seperator handled by prev regexp)
         return name
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         format = serviceRecord.GetConfiguration()["Format"]
         if format == "tcx":
             if "tcx" in activity.PrerenderedFormats:

@@ -265,19 +265,24 @@ form input[type=checkbox] {
 }
 
 button {
-	font-family: Economica;
+	/*font-family: Economica;
 	font-weight:bold;
-	font-size:150%;
-	text-align: center;
+	*/
+  font-size:150%;
+  text-align: center;
 	display:inline-block;
 	border:0;
 	padding:10px;
 	border-radius:5px;
-	background-color:#a2b8d0;
-	color:white;
+	/*background-color:#a2b8d0;
+	color:white;*/
 	margin:10px;
 	margin-bottom:0;
 	cursor:pointer;
+  
+  color: #ffffff;
+  background-color: #29af61;
+  border-color: #249a56;
 }
 
 button:focus {
@@ -377,6 +382,8 @@ p.infotip .close:hover {
 
 .dialogWrap img {
 	display:inline-block;
+  background: rgba(41, 175, 97, 0.53);
+  border-radius: 15px;
 }
 
 .splashPreamble {
@@ -676,7 +683,8 @@ p.infotip .close:hover {
 .syncButton {
 	display: inline-block;
 	position:relative;
-	border:50px solid #a2b8d0;
+	/*border:50px solid #a2b8d0;*/
+  border: 50px solid #26DA7E;
 	border-radius:50px;
 	height:0;
 	width:0;
@@ -699,8 +707,9 @@ p.infotip .close:hover {
 }
 
 .syncSettingsNubbin {
-	display: block;
-	margin-top:-30px;
+	/*display: block;*/
+  display: none !important;
+  margin-top:-30px;
 	margin-left:-20px;
 	height:20px;
 	left:50%;
@@ -722,16 +731,16 @@ p.infotip .close:hover {
 .syncButtonAttachment {
 	vertical-align: middle;
 	display: inline-block;
-	background-color:#749ac4;
+	background-color: #29af61; /*#749ac4;*/
 	color:white;
-	padding:15px 15px;
+	padding:10px 15px;
 	border-radius:5px;
 	font-size:120%;
 	white-space: nowrap; /* otherwise the animations break soooo bad */
 }
 
 .syncButtonAttachment.left {
-	padding-right:20px;
+	padding-right:50px;
 	margin-right:-15px;
 }
 
@@ -780,6 +789,7 @@ to {transform: rotate(0deg);}
 
 .paymentButton, .reclaimButton {
 	color:#aaa;
+  display: none !important;
 }
 
 .userException {
@@ -1039,7 +1049,7 @@ ul.itemized-clean li {
 }
 
 .fancyTable .headers, .fancyTable .footers {
-	background-color: #749ac4;
+	background-color: #29af61; /*#749ac4;*/
 }
 
 .fancyTable .headers {
@@ -1406,4 +1416,8 @@ body.staging .sub::before {
 	background-color:rgba(255,255,255,0.5);
 	color: black;
 	font-size:48px;
+}
+
+#runnersconnect{
+  display: none;
 }

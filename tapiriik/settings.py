@@ -6,12 +6,12 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+     ('Naveed', 'naveedahmada036@gmail.com'),
 )
 
 MANAGERS = ADMINS
 
-ALLOWED_HOSTS = ["tapiriik.com", ".tapiriik.com", "localhost"]
+ALLOWED_HOSTS = ["sync.runnersconnect.net", "app.runnersconnect.net", "localhost"]
 
 USE_X_FORWARDED_HOST = True
 

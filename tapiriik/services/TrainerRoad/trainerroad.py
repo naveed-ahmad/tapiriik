@@ -141,7 +141,7 @@ class TrainerRoadService(ServiceBase):
 
         return activity
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         # Nothing to see here.
         pass
 

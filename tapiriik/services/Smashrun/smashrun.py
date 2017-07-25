@@ -244,7 +244,7 @@ class SmashrunService(ServiceBase):
             return obj.Stats.MovingTime.asUnits(ActivityStatisticUnit.Seconds).Value
         return (obj.EndTime - obj.StartTime).total_seconds()
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         data = {}
         data['startDateTimeLocal'] = activity.StartTime.isoformat()
         data['distance'] = activity.Stats.Distance.asUnits(ActivityStatisticUnit.Kilometers).Value

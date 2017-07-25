@@ -248,7 +248,7 @@ class NikePlusService(ServiceBase):
 
         return activity
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         metrics = {
             "data": [],
             "metricTypes": [],

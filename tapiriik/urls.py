@@ -9,6 +9,8 @@ from django.views.generic import TemplateView
 urlpatterns = patterns('',
     url(r'^$', 'tapiriik.web.views.dashboard', name='dashboard'),
 
+    url(r'^rc/attach$', 'tapiriik.web.views.oauth.authrc', {}, name='oauth_rc', ),
+
     url(r'^auth/redirect/(?P<service>[^/]+)$', 'tapiriik.web.views.oauth.authredirect', {}, name='oauth_redirect', ),
     url(r'^auth/redirect/(?P<service>[^/]+)/(?P<level>.+)$', 'tapiriik.web.views.oauth.authredirect', {}, name='oauth_redirect', ),
     url(r'^auth/return/(?P<service>[^/]+)$', 'tapiriik.web.views.oauth.authreturn', {}, name='oauth_return', ),

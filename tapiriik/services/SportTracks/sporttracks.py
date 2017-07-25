@@ -455,7 +455,7 @@ class SportTracksService(ServiceBase):
     def DownloadActivity(self, serviceRecord, activity):
         return self._downloadActivity(serviceRecord, activity)
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         activityData = {}
         # Props to the SportTracks API people for seamlessly supprting activities with or without TZ data.
         activityData["start_time"] = activity.StartTime.isoformat()

@@ -192,7 +192,7 @@ class RideWithGPSService(ServiceBase):
 
         return activity
 
-    def UploadActivity(self, serviceRecord, activity):
+    def UploadActivity(self, serviceRecord, activity, activitySource):
         # https://ridewithgps.com/trips.json
 
         fit_file = FITIO.Dump(activity)
