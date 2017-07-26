@@ -549,7 +549,7 @@ p.infotip .close:hover {
 .service .config h2 {
 	color:white;
 	text-align: center;
-	font-size:110%;
+	font-size:80%;
 	margin-top: 3px;
 	margin-bottom:0;
 }
@@ -562,7 +562,7 @@ p.infotip .close:hover {
 
 .service .config label
 {
-	font-size:100%;
+	font-size:70%;
 	display: inline-block;
 }
 
@@ -748,7 +748,6 @@ p.infotip .close:hover {
 	color:white;
 	padding:10px 15px;
 	border-radius:5px;
-	font-size:120%;
 	white-space: nowrap; /* otherwise the animations break soooo bad */
 }
 

@@ -114,7 +114,8 @@ class RunnersConnectService(ServiceBase):
             "source": activitySource.DisplayName,
             "start_time": self._formatDate(activity.StartTime),
             "end_time": self._formatDate(activity.EndTime),
-            "points": []
+            "points": [],
+            "source_activity_id": activity.ServiceData['ActivityID']
         }
 
         if activity.Name:

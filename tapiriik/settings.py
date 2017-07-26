@@ -245,7 +245,7 @@ DISABLED_SERVICES = []
 WITHDRAWN_SERVICES = []
 
 # Where to put per-user sync logs
-USER_SYNC_LOGS = "./"
+USER_SYNC_LOGS = "./logs"
 
 # Set at startup
 SITE_VER = "unknown"

@@ -4,7 +4,7 @@
 	<div class="service{% if inactive %} inactive {% endif %} {% if provider.ID in user.ConnectedServices|svc_ids and provider.ID not in config.disabled_services %} connected {% endif %}" id="{{ provider.ID }}">
 		{% if not user or provider.ID not in user.ConnectedServices|svc_ids %}
 			{% if provider.ID not in config.disabled_services %}
-				<a href="{{ provider.UserAuthorizationURL }}" class="authDialog" service="{{ provider.ID }}">
+				<a href="{{ provider.UserAuthorizationURL }}" target="_blank" class="authDialog" service="{{ provider.ID }}">
 			{% endif %}
 		{% endif %}
 			<div class="button">
