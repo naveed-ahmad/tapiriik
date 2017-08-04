@@ -58,7 +58,7 @@ def sync_recent_activity(req):
 
 @require_POST
 def schedule_immediate_rc_sync(req):
-   token = req.POST.get('token')
+    token = req.POST.get('token')
 
     if token is None:
         return HttpResponse(status=403)
