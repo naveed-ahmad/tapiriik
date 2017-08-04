@@ -405,21 +405,21 @@ class SynchronizationTask:
         return self._excludedServices[serviceRecord._id]
 
     def _determineRecipientServices(self, activity):
-        recipientServices = [RunnersConnectService]
-        #for conn in self._serviceConnections:
-        #    if not conn.Service.ReceivesActivities:
-        #        # Nope.
-        #        continue
-        #    if conn._id in activity.ServiceDataCollection:
-        #        # The activity record is updated earlier for these, blegh.
-        #        continue
-        #    elif hasattr(conn, "SynchronizedActivities") and len([x for x in activity.UIDs if x in conn.SynchronizedActivities]):
-        #        continue
-        #    elif activity.Type not in conn.Service.SupportedActivities:
-        #        logger.debug("\t...%s doesn't support type %s" % (conn.Service.ID, activity.Type))
-        #        activity.Record.MarkAsNotPresentOn(conn, UserException(UserExceptionType.TypeUnsupported))
-        #    else:
-        #        recipientServices.append(conn)
+        recipientServices = []
+        for conn in self._serviceConnections:
+            if not conn.Service.ReceivesActivities:
+                # Nope.
+                continue
+            if conn._id in activity.ServiceDataCollection:
+                # The activity record is updated earlier for these, blegh.
+                continue
+            elif hasattr(conn, "SynchronizedActivities") and len([x for x in activity.UIDs if x in conn.SynchronizedActivities]):
+                continue
+            elif activity.Type not in conn.Service.SupportedActivities:
+                logger.debug("\t...%s doesn't support type %s" % (conn.Service.ID, activity.Type))
+                activity.Record.MarkAsNotPresentOn(conn, UserException(UserExceptionType.TypeUnsupported))
+            else:
+                recipientServices.append(conn)
         return recipientServices
 
     def _coalesceDatetime(self, a, b, knownTz=None):

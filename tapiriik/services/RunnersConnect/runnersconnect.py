@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class RunnersConnectService(ServiceBase):
+    ReceivesActivities = True
     ID = "runnersconnect"
     DisplayName = "RunnersConnect"
     DisplayAbbreviation = "RC"

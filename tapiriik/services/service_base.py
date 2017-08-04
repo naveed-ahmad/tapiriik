@@ -37,7 +37,7 @@ class ServiceBase:
     SupportsHR = SupportsCalories = SupportsCadence = SupportsTemp = SupportsPower = False
 
     # Does it?
-    ReceivesActivities = True # Any at all?
+    ReceivesActivities = False # Any at all?
     ReceivesStationaryActivities = True # Manually-entered?
     ReceivesNonGPSActivitiesWithOtherSensorData = True # Trainer-ish?
     SuppliesActivities = True
