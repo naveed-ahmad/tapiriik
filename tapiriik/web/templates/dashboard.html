@@ -58,7 +58,7 @@
 	{% endfor %}
 
 {% else %}
-<p class="splashPreamble">Import your fitness activities from Garmin Connect, Runkeeper, Strava, TrainingPeaks, SportTracks.mobi, Endomondo, RideWithGPS, TrainAsONE, TrainerRoad, Motivato, Velo Hero, Epson RUNSENSE, and Smashrun<br/>
+<p class="splashPreamble">Import your fitness activities from Garmin Connect, Runkeeper, Strava and Smashrun<br/>
 (your heart rate, cadence, power, and temperature data syncs too)</p>
 	{% for provider in service_providers %}
 		{% if provider.ID not in config.soft_launch and provider.ID not in config.withdrawn_services %}
