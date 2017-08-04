@@ -42,6 +42,7 @@ urlpatterns = patterns('',
     url(r'^sync/status$', 'tapiriik.web.views.sync_status', {}, name='sync_status'),
     url(r'^sync/activity$', 'tapiriik.web.views.sync_recent_activity', {}, name='sync_recent_activity'),
     url(r'^sync/schedule/now$', 'tapiriik.web.views.sync_schedule_immediate', {}, name='sync_schedule_immediate'),
+    url(r'^sync/schedule/rc_sync', 'tapiriik.web.views.schedule_immediate_rc_sync', {}, name='schedule_immediate_rc_sync'),
     url(r'^sync/errors/(?P<service>[^/]+)/clear/(?P<group>.+)$', 'tapiriik.web.views.sync_clear_errorgroup', {}, name='sync_clear_errorgroup'),
 
     url(r'^activities$', 'tapiriik.web.views.activities_dashboard', {}, name='activities_dashboard'),

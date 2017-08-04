@@ -4,6 +4,8 @@ from tapiriik.services import Service, ServiceRecord, APIExcludeActivity, Servic
 from tapiriik.settings import USER_SYNC_LOGS, DISABLED_SERVICES, WITHDRAWN_SERVICES
 from .activity_record import ActivityRecord, ActivityServicePrescence
 from datetime import datetime, timedelta
+from tapiriik.services.RunnersConnect import RunnersConnectService
+
 import sys
 import os
 import io
@@ -87,7 +89,7 @@ class Sync:
     SyncInterval = timedelta(hours=1)
     SyncIntervalJitter = timedelta(minutes=5)
     MinimumSyncInterval = timedelta(seconds=30)
-    MaximumIntervalBeforeExhaustiveSync = timedelta(days=14)  # Based on the general page size of 50 activites, this would be >3/day...
+    MaximumIntervalBeforeExhaustiveSync = timedelta(days=3)  # Based on the general page size of 50 activites, this would be >3/day...
 
     def ScheduleImmediateSync(user, exhaustive=None):
         if exhaustive is None:
@@ -403,21 +405,21 @@ class SynchronizationTask:
         return self._excludedServices[serviceRecord._id]
 
     def _determineRecipientServices(self, activity):
-        recipientServices = []
-        for conn in self._serviceConnections:
-            if not conn.Service.ReceivesActivities:
-                # Nope.
-                continue
-            if conn._id in activity.ServiceDataCollection:
-                # The activity record is updated earlier for these, blegh.
-                continue
-            elif hasattr(conn, "SynchronizedActivities") and len([x for x in activity.UIDs if x in conn.SynchronizedActivities]):
-                continue
-            elif activity.Type not in conn.Service.SupportedActivities:
-                logger.debug("\t...%s doesn't support type %s" % (conn.Service.ID, activity.Type))
-                activity.Record.MarkAsNotPresentOn(conn, UserException(UserExceptionType.TypeUnsupported))
-            else:
-                recipientServices.append(conn)
+        recipientServices = [RunnersConnectService]
+        #for conn in self._serviceConnections:
+        #    if not conn.Service.ReceivesActivities:
+        #        # Nope.
+        #        continue
+        #    if conn._id in activity.ServiceDataCollection:
+        #        # The activity record is updated earlier for these, blegh.
+        #        continue
+        #    elif hasattr(conn, "SynchronizedActivities") and len([x for x in activity.UIDs if x in conn.SynchronizedActivities]):
+        #        continue
+        #    elif activity.Type not in conn.Service.SupportedActivities:
+        #        logger.debug("\t...%s doesn't support type %s" % (conn.Service.ID, activity.Type))
+        #        activity.Record.MarkAsNotPresentOn(conn, UserException(UserExceptionType.TypeUnsupported))
+        #    else:
+        #        recipientServices.append(conn)
         return recipientServices
 
     def _coalesceDatetime(self, a, b, knownTz=None):

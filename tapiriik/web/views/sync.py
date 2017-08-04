@@ -57,6 +57,26 @@ def sync_recent_activity(req):
     return HttpResponse(json.dumps(res), content_type="application/json")
 
 @require_POST
+def schedule_immediate_rc_sync(req):
+   token = req.POST.get('token')
+
+    if token is None:
+        return HttpResponse(status=403)
+
+    user = User.EnsureWithRcToken(req, token)
+    uid, authData, extendedAuthData = (token, {}, {"token": token})
+    serviceRecord = Service.EnsureServiceRecordWithAuth(RunnersConnectService, uid, authData, extendedAuthData, True)
+    User.ConnectService(user, serviceRecord)
+
+    if "LastSynchronization" in req.user and req.user["LastSynchronization"] is not None and datetime.utcnow() - req.user["LastSynchronization"] < Sync.MinimumSyncInterval:
+        return HttpResponse(status=429)
+    exhaustive = None
+    if "LastSynchronization" in req.user and req.user["LastSynchronization"] is not None and datetime.utcnow() - req.user["LastSynchronization"] > Sync.MaximumIntervalBeforeExhaustiveSync:
+        exhaustive = True
+    Sync.ScheduleImmediateSync(req.user, exhaustive)
+    return HttpResponse()
+
+@require_POST
 def sync_schedule_immediate(req):
     if not req.user:
         return HttpResponse(status=401)
