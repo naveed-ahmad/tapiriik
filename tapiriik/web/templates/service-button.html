@@ -39,12 +39,12 @@
 								</div>
 							{% else %}
 								<div class="row">
-									<a href="{{ provider.UserDisconnectURL }}" class="deauthDialog" service="{{ provider.ID }}"><span class="control" id="sync-dc">Disconnect<span class="sr"> {{ provider.DisplayName }}</span></a>
+									<a href="{{ provider.UserDisconnectURL }}"target="_blank"  class="deauthDialog" service="{{ provider.ID }}"><span class="control" id="sync-dc">Disconnect<span class="sr"> {{ provider.DisplayName }}</span></a>
 								</div>
 							{% endif %}
 						{% else %}
 							<div class="row">
-							<a href="{{ provider.UserAuthorizationURL }}" class="authDialog control" id="login" service="{{ provider.ID }}">Connect</a>
+							<a href="{{ provider.UserAuthorizationURL }}"target="_blank"  class="authDialog control" id="login" service="{{ provider.ID }}">Connect</a>
 							</div>
 						{% endif %}
 					{% endif %}
