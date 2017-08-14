@@ -21,7 +21,7 @@ class RunnersConnectService(ServiceBase):
     ID = "runnersconnect"
     DisplayName = "RunnersConnect"
     DisplayAbbreviation = "RC"
-    UPLOAD_ACTIVITY_URL = "http://staging.runnersconnect.net/services/upload_activity"
+    UPLOAD_ACTIVITY_URL = "https://app.runnersconnect.net/services/upload_activity"
     UserProfileURL = "https://app.runnersconnect/profiles/{0}"
     UserActivityURL = "http://app.runnersconnect/external_activities/{1}/{0}"
     RequiresExtendedAuthorizationDetails = True
