@@ -189,12 +189,12 @@ class Sync:
                     "QueuedAt": None # Set by sync_scheduler when the record enters the MQ
                 }
             }
-
-            if result.ForceExhaustive:
-                logger.info("Forcing next sync as exhaustive")
-                reschedule_update["$set"]["NextSyncIsExhaustive"] = True
-            else:
-                reschedule_update["$unset"]["NextSyncIsExhaustive"] = ""
+            #NOTE: this is breaking worker
+            #if result.ForceExhaustive:
+            #    logger.info("Forcing next sync as exhaustive")
+            #    reschedule_update["$set"]["NextSyncIsExhaustive"] = True
+            #else:
+            #    reschedule_update["$unset"]["NextSyncIsExhaustive"] = ""
 
             scheduling_result = db.users.update(
                 {

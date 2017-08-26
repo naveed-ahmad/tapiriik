@@ -57,6 +57,7 @@ def sync_recent_activity(req):
     return HttpResponse(json.dumps(res), content_type="application/json")
 
 @require_POST
+@csrf_exempt
 def schedule_immediate_rc_sync(req):
     token = req.POST.get('token')
 
