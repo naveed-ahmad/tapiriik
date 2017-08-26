@@ -9,6 +9,7 @@ from tapiriik.services import Service
 from tapiriik.settings import MONGO_FULL_WRITE_CONCERN
 from datetime import datetime
 import zlib
+from tapiriik.services.RunnersConnect import RunnersConnectService
 
 
 def sync_status(req):
