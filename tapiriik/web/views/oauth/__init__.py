@@ -58,8 +58,7 @@ def authreturn(req, service, level=None):
     connectedServices = [s["Service"] for s in req.user['ConnectedServices']]
     logger.info("connected services  %s " % (connectedServices))
 
-    return HttpResponse(json.dumps({"success": success, "user": req.user["_id"], "connectedServices": connectedServices}), content_type='application/json')
-
+    return HttpResponse(json.dumps({"success": success == True, "user": req.user["rc_token"], "connectedServices": connectedServices}), content_type='application/json')
 
 def auth_rc(req):
     token = req.GET.get('token')

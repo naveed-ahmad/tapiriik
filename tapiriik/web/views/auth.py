@@ -5,8 +5,9 @@ from django.shortcuts import render, redirect
 from tapiriik.services import Service
 from tapiriik.auth import User
 import json
+import logging
 from tapiriik.services.RunnersConnect import RunnersConnectService
-
+logger = logging.getLogger(__name__)
 
 def auth_login(req, service):
     return redirect("/#/auth/%s" % service)
@@ -15,13 +16,18 @@ def auth_login(req, service):
 @require_POST
 def auth_login_ajax(req, service):
     res = auth_do(req, service)
+    connectedServices = []
+
+    if req.user
+        connectedServices = [s["Service"] for s in req.user['ConnectedServices']]
+        logger.info("connected services  %s " % (connectedServices))
     return HttpResponse(json.dumps({"success": res == True, "result": res}), content_type='application/json')
 
 def auth_do(req, service):
     rc_token = req.POST.get('rc_token')
 
     if rc_token is None:
-      return "No RC token."
+        return "No RC token."
 
     rc_user = User.EnsureWithRcToken(req, rc_token)
     rc_uid, rc_authData, rc_extendedAuthData = (rc_token, {}, {"token": rc_token})
