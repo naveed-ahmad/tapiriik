@@ -5,8 +5,11 @@ from django.views.decorators.csrf import csrf_exempt
 from tapiriik.services import Service
 from tapiriik.auth import User
 import json
+import logging
+
 from tapiriik.services.RunnersConnect import RunnersConnectService
 
+logger = logging.getLogger(__name__)
 
 def authredirect(req, service, level=None):
     svc = Service.FromID(service)
@@ -22,6 +25,8 @@ def authreturn(req, service, level=None):
     rc_uid, rc_authData, rc_extendedAuthData = (rc_token, {}, {"token": rc_token})
     rc_serviceRecord = Service.EnsureServiceRecordWithAuth(RunnersConnectService, rc_uid, rc_authData, rc_extendedAuthData, True)
     User.ConnectService(rc_user, rc_serviceRecord)
+
+    logger.info("Auto logged user %s " % (req.user['rc_token']))
 
     if ("error" in req.GET or "not_approved" in req.GET):
         success = False
