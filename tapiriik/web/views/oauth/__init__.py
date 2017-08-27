@@ -55,7 +55,8 @@ def authreturn(req, service, level=None):
         success = True
 
     #return render(req, "oauth-return.html", {"success": 1 if success else 0})
-    return HttpResponse(json.dumps({"success": success, "user": req.user["_id"], "connectedServices": req.user['ConnectedServices']}), content_type='application/json')
+
+    return HttpResponse(json.dumps({"success": success, "user": req.user["_id"], "connectedServices": [s["Service"] for s in req.user['ConnectedServices']] }), content_type='application/json')
 
 
 def auth_rc(req):
