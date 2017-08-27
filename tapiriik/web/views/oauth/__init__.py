@@ -13,6 +13,16 @@ def authredirect(req, service, level=None):
     return redirect(svc.GenerateUserAuthorizationURL(req.session, level))
 
 def authreturn(req, service, level=None):
+    rc_token = req.GET.get('rc_token')
+
+    if rc_token is None:
+        return redirect("https://app.runnersconnect.net")
+
+    rc_user = User.EnsureWithRcToken(req, rc_token)
+    rc_uid, rc_authData, rc_extendedAuthData = (rc_token, {}, {"token": rc_token})
+    rc_serviceRecord = Service.EnsureServiceRecordWithAuth(RunnersConnectService, rc_uid, rc_authData, rc_extendedAuthData, True)
+    User.ConnectService(rc_user, rc_serviceRecord)
+
     if ("error" in req.GET or "not_approved" in req.GET):
         success = False
     else:
@@ -27,12 +37,14 @@ def authreturn(req, service, level=None):
         serviceRecord = Service.EnsureServiceRecordWithAuth(svc, uid, authData)
 
         # auth by this service connection
-        existingUser = User.AuthByService(serviceRecord)
+        # we've already created and logged in user with rc token
+        #existingUser = User.AuthByService(serviceRecord)
+
         # only log us in as this different user in the case that we don't already have an account
-        if req.user is None and existingUser is not None:
-            User.Login(existingUser, req)
-        else:
-            User.Ensure(req)
+        #if req.user is None and existingUser is not None:
+        #    User.Login(existingUser, req)
+        #else:
+        #    User.Ensure(req)
         # link service to user account, possible merge happens behind the scenes (but doesn't effect active user)
         User.ConnectService(req.user, serviceRecord)
         success = True

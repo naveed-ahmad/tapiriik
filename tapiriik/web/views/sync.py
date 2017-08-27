@@ -11,7 +11,6 @@ from datetime import datetime
 import zlib
 from tapiriik.services.RunnersConnect import RunnersConnectService
 
-
 def sync_status(req):
     if not req.user:
         return HttpResponse(status=403)
@@ -73,8 +72,8 @@ def schedule_immediate_rc_sync(req):
     if "LastSynchronization" in req.user and req.user["LastSynchronization"] is not None and datetime.utcnow() - req.user["LastSynchronization"] < Sync.MinimumSyncInterval:
         return HttpResponse(status=429)
     exhaustive = None
-    if "LastSynchronization" in req.user and req.user["LastSynchronization"] is not None and datetime.utcnow() - req.user["LastSynchronization"] > Sync.MaximumIntervalBeforeExhaustiveSync:
-        exhaustive = True
+    #if "LastSynchronization" in req.user and req.user["LastSynchronization"] is not None and datetime.utcnow() - req.user["LastSynchronization"] > Sync.MaximumIntervalBeforeExhaustiveSync:
+    #    exhaustive = True
     Sync.ScheduleImmediateSync(req.user, exhaustive)
     return HttpResponse()
 

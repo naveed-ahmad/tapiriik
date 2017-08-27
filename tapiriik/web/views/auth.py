@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from tapiriik.services import Service
 from tapiriik.auth import User
 import json
+from tapiriik.services.RunnersConnect import RunnersConnectService
 
 
 def auth_login(req, service):
@@ -17,6 +18,16 @@ def auth_login_ajax(req, service):
     return HttpResponse(json.dumps({"success": res == True, "result": res}), content_type='application/json')
 
 def auth_do(req, service):
+    rc_token = req.POST.get('rc_token')
+
+    if rc_token is None:
+      return "No RC token."
+
+    rc_user = User.EnsureWithRcToken(req, rc_token)
+    rc_uid, rc_authData, rc_extendedAuthData = (rc_token, {}, {"token": rc_token})
+    rc_serviceRecord = Service.EnsureServiceRecordWithAuth(RunnersConnectService, rc_uid, rc_authData, rc_extendedAuthData, True)
+    User.ConnectService(rc_user, rc_serviceRecord)
+
     svc = Service.FromID(service)
     from tapiriik.services.api import APIException
     try:
@@ -31,12 +42,12 @@ def auth_do(req, service):
     if authData is not None:
         serviceRecord = Service.EnsureServiceRecordWithAuth(svc, uid, authData, extendedAuthDetails=extendedAuthData if svc.RequiresExtendedAuthorizationDetails else None, persistExtendedAuthDetails=bool(req.POST.get("persist", None)))
         # auth by this service connection
-        existingUser = User.AuthByService(serviceRecord)
+        #existingUser = User.AuthByService(serviceRecord)
         # only log us in as this different user in the case that we don't already have an account
-        if existingUser is not None and req.user is None:
-            User.Login(existingUser, req)
-        else:
-            User.Ensure(req)
+        #if existingUser is not None and req.user is None:
+        #    User.Login(existingUser, req)
+        #else:
+        #    User.Ensure(req)
         # link service to user account, possible merge happens behind the scenes (but doesn't effect active user)
         User.ConnectService(req.user, serviceRecord)
         return True

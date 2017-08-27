@@ -32,8 +32,7 @@ class User:
        if existingUser is None:
          User.CreateWithRcToken(token, get_real_ip(req))
        existingUser = User.GetByRcToken(token)
-       req.user = existingUser
-       User.Login(req.user, req)
+       User.Login(existingUser, req)
        return existingUser
 
     def GetByConnection(svcRec):
