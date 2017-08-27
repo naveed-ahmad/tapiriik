@@ -18,7 +18,7 @@ def auth_login_ajax(req, service):
     res = auth_do(req, service)
     connectedServices = []
 
-    if req.user
+    if req.user is not None:
         connectedServices = [s["Service"] for s in req.user['ConnectedServices']]
         logger.info("connected services  %s " % (connectedServices))
     return HttpResponse(json.dumps({"success": res == True, "result": res}), content_type='application/json')
