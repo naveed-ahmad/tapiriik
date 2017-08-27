@@ -100,14 +100,18 @@ class StravaService(ServiceBase):
 
     def RetrieveAuthorizationToken(self, req, level):
         code = req.GET.get("code")
-        params = {"grant_type": "authorization_code", "code": code, "client_id": STRAVA_CLIENT_ID, "client_secret": STRAVA_CLIENT_SECRET, "redirect_uri": WEB_ROOT + reverse("oauth_return", kwargs={"service": "strava"})}
+        token = req.GET.get("access_token")
 
-        response = requests.post("https://www.strava.com/oauth/token", data=params)
-        if response.status_code != 200:
-            raise APIException("Invalid code")
-        data = response.json()
+        if token is None:
+            params = {"grant_type": "authorization_code", "code": code, "client_id": STRAVA_CLIENT_ID, "client_secret": STRAVA_CLIENT_SECRET, "redirect_uri": WEB_ROOT + reverse("oauth_return", kwargs={"service": "strava"})}
 
-        authorizationData = {"OAuthToken": data["access_token"]}
+            response = requests.post("https://www.strava.com/oauth/token", data=params)
+            if response.status_code != 200:
+                raise APIException("Invalid code")
+            data = response.json()
+            token = data["access_token"]
+
+        authorizationData = {"OAuthToken": token}
         # Retrieve the user ID, meh.
         id_resp = requests.get("https://www.strava.com/api/v3/athlete", headers=self._apiHeaders(ServiceRecord({"Authorization": authorizationData})))
         return (id_resp.json()["id"], authorizationData)

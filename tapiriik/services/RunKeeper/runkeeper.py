@@ -53,12 +53,14 @@ class RunKeeperService(ServiceBase):
 
         #  might consider a real OAuth client
         code = req.GET.get("code")
-        params = {"grant_type": "authorization_code", "code": code, "client_id": RUNKEEPER_CLIENT_ID, "client_secret": RUNKEEPER_CLIENT_SECRET, "redirect_uri": WEB_ROOT + reverse("oauth_return", kwargs={"service": "runkeeper"})}
+        token = req.GET.get("access_token")
+        if token is None:
+            params = {"grant_type": "authorization_code", "code": code, "client_id": RUNKEEPER_CLIENT_ID, "client_secret": RUNKEEPER_CLIENT_SECRET, "redirect_uri": WEB_ROOT + reverse("oauth_return", kwargs={"service": "runkeeper"})}
 
-        response = requests.post("https://runkeeper.com/apps/token", data=urllib.parse.urlencode(params), headers={"Content-Type": "application/x-www-form-urlencoded"})
-        if response.status_code != 200:
-            raise APIException("Invalid code")
-        token = response.json()["access_token"]
+            response = requests.post("https://runkeeper.com/apps/token", data=urllib.parse.urlencode(params), headers={"Content-Type": "application/x-www-form-urlencoded"})
+            if response.status_code != 200:
+                raise APIException("Invalid code")
+            token = response.json()["access_token"]
 
         # This used to check with GetServiceRecordWithAuthDetails but that's hideously slow on an unindexed field.
         uid = self._getUserId(ServiceRecord({"Authorization": {"Token": token}}))  # meh

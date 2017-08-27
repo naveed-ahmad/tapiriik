@@ -35,6 +35,7 @@ def authreturn(req, service, level=None):
         try:
             uid, authData = svc.RetrieveAuthorizationToken(req, level)
         except Exception as e:
+            logger.info("Errrrr %s " % (str(e)))
             return render(req, "oauth-failure.html", {
                 "service": svc,
                 "error": str(e)
