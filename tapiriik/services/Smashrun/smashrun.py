@@ -131,8 +131,8 @@ class SmashrunService(ServiceBase):
             token = client.fetch_token(code=code)
             uid = client.get_userinfo()['id']
 
-        self._cacheToken(uid, token)
-        return (uid, token)
+        self._cacheToken(str(uid), token)
+        return (str(uid), token)
 
     def RevokeAuthorization(self, serviceRecord):
         pass  # TODO: smashrun doesn't seem to support this yet
