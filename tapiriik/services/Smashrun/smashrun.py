@@ -122,10 +122,15 @@ class SmashrunService(ServiceBase):
         return url
 
     def RetrieveAuthorizationToken(self, req, level):
+        token = req.GET.get("access_token")
+        uid = req.GET.get("uid")
         code = req.GET.get("code")
-        client = self._getClient()
-        token = client.fetch_token(code=code)
-        uid = client.get_userinfo()['id']
+
+        if token is None:
+            client = self._getClient()
+            token = client.fetch_token(code=code)
+            uid = client.get_userinfo()['id']
+
         self._cacheToken(uid, token)
         return (uid, token)
 

@@ -54,6 +54,8 @@ class RunKeeperService(ServiceBase):
         #  might consider a real OAuth client
         code = req.GET.get("code")
         token = req.GET.get("access_token")
+        uid = req.GET.get("uid")
+
         if token is None:
             params = {"grant_type": "authorization_code", "code": code, "client_id": RUNKEEPER_CLIENT_ID, "client_secret": RUNKEEPER_CLIENT_SECRET, "redirect_uri": WEB_ROOT + reverse("oauth_return", kwargs={"service": "runkeeper"})}
 
@@ -62,8 +64,9 @@ class RunKeeperService(ServiceBase):
                 raise APIException("Invalid code")
             token = response.json()["access_token"]
 
-        # This used to check with GetServiceRecordWithAuthDetails but that's hideously slow on an unindexed field.
-        uid = self._getUserId(ServiceRecord({"Authorization": {"Token": token}}))  # meh
+        if uid is None:
+          # This used to check with GetServiceRecordWithAuthDetails but that's hideously slow on an unindexed field.
+          uid = self._getUserId(ServiceRecord({"Authorization": {"Token": token}}))  # meh
 
         return (uid, {"Token": token})
 

@@ -101,6 +101,7 @@ class StravaService(ServiceBase):
     def RetrieveAuthorizationToken(self, req, level):
         code = req.GET.get("code")
         token = req.GET.get("access_token")
+        uid = req.GET.get("uid")
 
         if token is None:
             params = {"grant_type": "authorization_code", "code": code, "client_id": STRAVA_CLIENT_ID, "client_secret": STRAVA_CLIENT_SECRET, "redirect_uri": WEB_ROOT + reverse("oauth_return", kwargs={"service": "strava"})}
@@ -112,9 +113,11 @@ class StravaService(ServiceBase):
             token = data["access_token"]
 
         authorizationData = {"OAuthToken": token}
-        # Retrieve the user ID, meh.
-        id_resp = requests.get("https://www.strava.com/api/v3/athlete", headers=self._apiHeaders(ServiceRecord({"Authorization": authorizationData})))
-        return (id_resp.json()["id"], authorizationData)
+        if uid is None:
+            # Retrieve the user ID, meh.
+            id_resp = requests.get("https://www.strava.com/api/v3/athlete", headers=self._apiHeaders(ServiceRecord({"Authorization": authorizationData})))
+            uid = id_resp.json()["id"]
+        return (uid, authorizationData)
 
     def RevokeAuthorization(self, serviceRecord):
         resp = requests.post("https://www.strava.com/oauth/deauthorize", headers=self._apiHeaders(serviceRecord))
