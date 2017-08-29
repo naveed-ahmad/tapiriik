@@ -830,8 +830,8 @@ class SynchronizationTask:
                 continue
 
             activity.Record.ResetFailureCount(dlSvcRecord)
-
-            if workingCopy.Private and not dlSvcRecord.GetConfiguration()["sync_private"]:
+            # its fine to sync private activities to rc
+            if False and workingCopy.Private and not dlSvcRecord.GetConfiguration()["sync_private"]:
                 logger.info("\t\t...is private and restricted from sync")  # Sync exclusion instead?
                 activity.Record.MarkAsNotPresentOtherwise(UserException(UserExceptionType.Private))
                 continue
@@ -903,7 +903,7 @@ class SynchronizationTask:
 
         self._initializeUserLogging()
 
-        logger.info("Beginning sync for " + str(self.user["_id"]) + "(exhaustive: " + str(exhaustive) + ")")
+        logger.info("Beginning sync for " + str(self.user["rc_token"]) + "(exhaustive: " + str(exhaustive) + ")")
 
         # Sets up serviceConnections
         self._loadServiceData()

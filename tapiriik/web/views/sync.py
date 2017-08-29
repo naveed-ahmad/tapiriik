@@ -11,6 +11,11 @@ from datetime import datetime
 import zlib
 from tapiriik.services.RunnersConnect import RunnersConnectService
 
+def user_connected_services_stats
+    users = list(db.users.find({}))
+    users_2=list(db.users.with_options(read_preference=ReadPreference.PRIMARY).find({}))
+    scheduled_ids = [[x["rc_token"], str(x["_id"]), [b['Service'] for b in x['ConnectedServices']]] for x in users]
+
 def sync_status_rc(req):
     token = req.GET.get('token')
 
@@ -21,7 +26,7 @@ def sync_status_rc(req):
     uid, authData, extendedAuthData = (token, {}, {"token": token})
     serviceRecord = Service.EnsureServiceRecordWithAuth(RunnersConnectService, uid, authData, extendedAuthData, True)
     User.ConnectService(user, serviceRecord)
-    
+
     return sync_status(req)
 
 def sync_status(req):
