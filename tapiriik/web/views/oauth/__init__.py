@@ -72,4 +72,5 @@ def auth_rc(req):
     serviceRecord = Service.EnsureServiceRecordWithAuth(RunnersConnectService, uid, authData, extendedAuthData, True)
     User.ConnectService(user, serviceRecord)
 
-    return redirect("http://sync.runnersconnect.net/")
+    return render(req, "dashboard.html")
+    #return redirect("http://sync.runnersconnect.net/")

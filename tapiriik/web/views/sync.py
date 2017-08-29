@@ -11,6 +11,19 @@ from datetime import datetime
 import zlib
 from tapiriik.services.RunnersConnect import RunnersConnectService
 
+def sync_status_rc(req):
+    token = req.GET.get('token')
+
+    if token is None:
+        return HttpResponse(status=403)
+
+    user = User.EnsureWithRcToken(req, token)
+    uid, authData, extendedAuthData = (token, {}, {"token": token})
+    serviceRecord = Service.EnsureServiceRecordWithAuth(RunnersConnectService, uid, authData, extendedAuthData, True)
+    User.ConnectService(user, serviceRecord)
+    
+    return sync_status(req)
+
 def sync_status(req):
     if not req.user:
         return HttpResponse(status=403)
@@ -69,8 +82,8 @@ def schedule_immediate_rc_sync(req):
     serviceRecord = Service.EnsureServiceRecordWithAuth(RunnersConnectService, uid, authData, extendedAuthData, True)
     User.ConnectService(user, serviceRecord)
 
-    if "LastSynchronization" in req.user and req.user["LastSynchronization"] is not None and datetime.utcnow() - req.user["LastSynchronization"] < Sync.MinimumSyncInterval:
-        return HttpResponse(status=429)
+    #if "LastSynchronization" in req.user and req.user["LastSynchronization"] is not None and datetime.utcnow() - req.user["LastSynchronization"] < Sync.MinimumSyncInterval:
+    #    return HttpResponse(status=429)
     exhaustive = None
     #if "LastSynchronization" in req.user and req.user["LastSynchronization"] is not None and datetime.utcnow() - req.user["LastSynchronization"] > Sync.MaximumIntervalBeforeExhaustiveSync:
     #    exhaustive = True

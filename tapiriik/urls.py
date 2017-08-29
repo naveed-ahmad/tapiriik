@@ -40,6 +40,7 @@ urlpatterns = patterns('',
     url(r'^dropbox/browse-ajax/(?P<path>.+)?$', 'tapiriik.web.views.dropbox.browse', {}, name='dropbox_browse_ajax', ),
 
     url(r'^sync/status$', 'tapiriik.web.views.sync_status', {}, name='sync_status'),
+    url(r'^sync/status_rc$', 'tapiriik.web.views.sync_status_rc', {}, name='sync_status_rc'),
     url(r'^sync/activity$', 'tapiriik.web.views.sync_recent_activity', {}, name='sync_recent_activity'),
     url(r'^sync/schedule/now$', 'tapiriik.web.views.sync_schedule_immediate', {}, name='sync_schedule_immediate'),
     url(r'^sync/schedule/rc_sync', 'tapiriik.web.views.schedule_immediate_rc_sync', {}, name='schedule_immediate_rc_sync'),
