@@ -31,4 +31,4 @@ while True:
         producer.publish({"user_id": str(user["_id"]), "generation": generation}, routing_key=user["SynchronizationHostRestriction"] if "SynchronizationHostRestriction" in user and user["SynchronizationHostRestriction"] else "")
     print("Scheduled %d users at %s" % (len(scheduled_ids), datetime.utcnow()))
 
-    time.sleep(1)
+    time.sleep(5)
