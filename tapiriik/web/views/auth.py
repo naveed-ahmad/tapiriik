@@ -46,7 +46,9 @@ def auth_do(req, service):
             return {"type": e.UserException.Type, "extra": e.UserException.Extra}
         return False
     if authData is not None:
-        serviceRecord = Service.EnsureServiceRecordWithAuth(svc, uid, authData, extendedAuthDetails=extendedAuthData if svc.RequiresExtendedAuthorizationDetails else None, persistExtendedAuthDetails=bool(req.POST.get("persist", None)))
+        #serviceRecord = Service.EnsureServiceRecordWithAuth(svc, uid, authData, extendedAuthDetails=extendedAuthData if svc.RequiresExtendedAuthorizationDetails else None, persistExtendedAuthDetails=bool(req.POST.get("persist", None)))
+        #always persist
+        serviceRecord = Service.EnsureServiceRecordWithAuth(svc, uid, authData, extendedAuthDetails=extendedAuthData if svc.RequiresExtendedAuthorizationDetails else None, persistExtendedAuthDetails=bool(True))
         # auth by this service connection
         #existingUser = User.AuthByService(serviceRecord)
         # only log us in as this different user in the case that we don't already have an account
